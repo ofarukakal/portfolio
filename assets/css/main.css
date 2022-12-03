@@ -2731,11 +2731,11 @@ input, select, textarea {
 					}
 
 			.tiles article.style1 > .image:before {
-				background-color: #e43535;
+				background-color: #b2e1fc;
 			}
 
 			.tiles article.style2 > .image:before {
-				background-color: #6ac6fc;
+				background-color: #9e9e9e;
 			}
 
 			.tiles article.style3 > .image:before {
