@@ -44,8 +44,12 @@
 							<h1>COVID-19 Data Analysis</h1>
 							<!--<span class="image main"><img src="images/covid.jpg" alt="" /> </span>-->
 							<iframe class="image embed" title="Covid_Visualization"  src="https://app.powerbi.com/view?r=eyJrIjoiMTA1NDZjNjItYWVlNC00OWVlLWJkNGItMGM2M2RmYTRlYjhkIiwidCI6IjU3MWM4NzU1LWI2ZjYtNGU3Mi1hYjU4LTJlYWVjNDllNDEzZCIsImMiOjl9&pageName=ReportSection5b73ce066eb5c9572e16" frameborder="0" allowFullScreen="true"></iframe>							
-							<p>***.</p>
-                            <pre> <code class="lang-sql">
+							<p>The COVID-19 epidemic, which emerged in Wuhan, China on November 17, 2019, has locked life all over the world for about 2 years. In my analysis, I analyzed the deaths and cases until 15 October 2022 on a country-by-country basis across the world.</p>
+							<li><a target= "_blank" href="https://ourworldindata.org/covid-deaths"><span class="label">You can access the current COVID-19 dataset here.</span></a></li>
+							<p></p>
+							<p>I made the data set I received from the Our World in Data suitable for editing and visualization using Microsoft SQL Server. You can see the SQL codes I wrote in the code snippets below.</p>
+
+							<pre> <code class="lang-sql">
 --Select Data that we are gonna use
 SELECT *
 FROM COVID_Analysis..Covid_Deaths
@@ -85,7 +89,11 @@ ALTER COLUMN new_deaths FLOAT NULL;
 ALTER TABLE COVID_Analysis..Covid_Deaths
 ALTER COLUMN population FLOAT NULL;
 
+</code></pre>
 
+<p></p>
+
+<pre> <code class="lang-sql">
 -- Focusing at Total Cases and Population
 SELECT location, date, total_cases, total_deaths, (total_deaths /total_cases)*100 AS Death_Percentage
 FROM COVID_Analysis..Covid_Deaths
