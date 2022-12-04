@@ -11,6 +11,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/prism.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -35,9 +36,239 @@
 							<h1>Terrorism Attacks Analysis</h1>
 							<!--<span class="image main"><img src="images/covid.jpg" </span>-->
 							<div class='tableauPlaceholder' id='viz1670094803495' style='position: relative'><noscript><a href='#'><img alt='Worldwide Terrorism Analysis ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Wo&#47;WorldwideTerrorismAnalysis&#47;Dashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='WorldwideTerrorismAnalysis&#47;Dashboard' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Wo&#47;WorldwideTerrorismAnalysis&#47;Dashboard&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1670094803495');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1527px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+							<p></p>
+							<p>One of the biggest problems of countries is terrorism. In this analysis, I used a dataset that includes all terrorist incidents recorded from 1970 to 2017. I have analyzed all worldwide terrorist attacks.</p>
+							<li><a target= "_blank" href="https://www.kaggle.com/datasets/START-UMD/gtd"><span class="label">You can access the Worldwide Terrorism Attacks dataset here.</span></a></li>
+							<p></p>
+							<p>I analyzed the data set from the Global Terrorism Database(GTD) using Python. And I visualized it with Tableau. You can see the Python codes I wrote in the code snippets below.</p>
+
+							<p>Importing Libraries</p>
+							<pre><code class="language-python">
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.filterwarnings("ignore")
+import os
+import base64
+from multiprocessing.managers import BaseManager
+from mpl_toolkits.basemap import Basemap
+import matplotlib.patches as mpatches
+import io
+from matplotlib import animation, rc 
+import folium
+import folium.plugins
+from IPython.core.display import display, HTML
+import codecs
+from subprocess import check_output
+							</code></pre>
+							<p></p>
+							<p>Importing Dataset with Pandas</p>
+							<pre><code class="language-python">
+terror_csv = pd.read_csv(r"D:\GitHub\World_Terrorism_Analysis\gtd_data.csv",encoding="ISO-8859-1") 
+
+terror_csv.rename(columns={'iyear':'Year','imonth':'Month','iday':'Day','country_txt':'Country', 'city':'City', 'latitude':'Latitude', 'longitude':'Longitude', 'attacktype1_txt':'AttackType', 'nkill':'Death', 'nwound':'Injured', 'gname':'Attacker','targtype1_txt':'TargetType','weaptype1_txt':'WeaponType', 'weapsubtype1_txt':'WeaponSubType'},inplace=True)
+terror_csv=terror_csv[["Year","Month","Day","Country","City","Latitude","Longitude","AttackType","Death","Injured","Attacker","TargetType","WeaponType","WeaponSubType"]]
+							</code></pre>
+							<p></p>
+							<p>Get the First 5 Elements of Dataset</p>
+							<pre><code class="language-python">
+terror_csv.head()
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/head.jpg">
+							<p></p>
+							<p>Retrieve Rows and Columns Description</p>
+							<pre><code class="language-python">
+terror_csv.shape()
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/shape.jpg">
+
+							<p></p>
+							<p>Describe a Summary of Data Statistics</p>
+							<pre><code class="language-python">
+terror_csv.describe()
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/describe.jpg">
+							<p></p>
+							<p>Shows Count of Nulls by Columns</p>
+							<pre><code class="language-python">
+terror_csv.isnull().sum()
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/isnull.jpg">
+							<p></p>
+
+							<p>Basic Analysis</p>
+
+							<pre><code class="language-python">
+print("Known Count of Deaths in Terrorist Attacks:", terror_csv["Death"].value_counts()[0], "\n")
+
+print("Country With The Highest Terrorist Attacks:", terror_csv["Country"].value_counts().index[0], "\n")
+
+print("Most deaths in an attack:\n",terror_csv.loc[terror_csv['Death'].idxmax()], "\n")							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/b_analysis.jpg">
+							<p></p>
+							<p>Terrorism Attacks by Year</p>
+							<pre><code class="language-python">
+plt.subplots(figsize=(15,6))
+sns.countplot(data=terror_csv, x="Year", palette="mako")
+plt.xticks(rotation=90)
+plt.title('Terrorism Attacks by Year')
+plt.show()							
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/attack_year.png">
+
+							<p>Terrorism Attacks Each Target Type</p>
+							<pre><code class="language-python">
+plt.subplots(figsize=(12,6))
+sns.countplot(data=terror_csv, x="TargetType", order=terror_csv["TargetType"].value_counts().index, palette="rocket")
+plt.xticks(rotation=90)
+plt.title('Terrorism Attacks Each Target Type')
+plt.show()						
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/target.png">
+
+							<p></p>
+
+							<p>Terrorism Attacks Each Attack Type</p>
+							<pre><code class="language-python">
+plt.subplots(figsize=(8,6))
+sns.countplot(data=terror_csv, x="AttackType", order=terror_csv["AttackType"].value_counts().index, palette="rocket")
+plt.xticks(rotation=90)
+plt.title('Terrorism Attacks Each Attack Type')
+plt.show()						
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/attactype.png">
+
+							<p>Top 10 Affected Countries</p>
+							<pre><code class="language-python">
+plt.subplots(figsize=(10,6))
+sns.barplot(x = terror_csv["Country"].value_counts()[:10].index,y= terror_csv["Country"].value_counts()[:10].values, palette="rocket")
+plt.xticks(rotation=90)
+plt.title('Top 10 Affected Countries')
+plt.show()					
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/affect.png">
+
+							<p></p>
+
+							<p>Terrorist Groups with the Most Attacks</p>
+							<pre><code class="language-python">
+plt.subplots(figsize=(8,6))
+sns.barplot(x = terror_csv["Attacker"].value_counts()[1:11].values, y= terror_csv["Attacker"].value_counts()[1:11].index , palette="rocket")
+plt.title('Terrorist Groups with the Most Attacks')
+plt.show()			
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/most_attack.png">
+
+							<p></p>
 							
-							<p>***.</p>
-							<p>***.</p>
+							<p>Turkey Map with Terrorism Attacks</p>
+							<pre><code class="language-python">
+def color_point(x):
+    if x>=30:
+        color='red'
+    elif ((x>0 and x<30)):
+        color='blue'
+    else:
+        color='green'
+    return color  
+    
+def point_size(x):
+    if (x>30 and x<100):
+        size=2
+    elif (x>=100 and x<500):
+        size=8
+    elif x>=500:
+        size=16
+    else:
+        size=0.5
+    return size   
+
+terror_turkey=terror_csv[terror_csv["Country"]=="Turkey"]
+terror_turkey_fol=terror_turkey.copy()
+terror_turkey_fol.dropna(subset=["Latitude","Longitude"],inplace=True)
+location_tr=terror_turkey_fol[["Latitude","Longitude"]][:5000]
+city_tr=terror_turkey_fol["City"][:5000]
+Death_tr=terror_turkey_fol["Death"][:5000]
+Injured_tr=terror_turkey_fol["Injured"][:5000]
+target_tr=terror_turkey_fol["TargetType"][:5000]
+
+map1 = folium.Map(location=[39.1667, 35.6667],tiles='CartoDB dark_matter',zoom_start=6.4)
+for point in location_tr.index:
+    folium.CircleMarker(list(location_tr.loc[point].values),popup='<b>City: </b>'+str(city_tr[point])+'<br><b>Killed: </b>'+str(Death_tr[point])+'<br><b>Injured: </b>'+str(Injured_tr[point])+'<br><b>Target: </b>'+str(target_tr[point]),radius=point_size(Death_tr[point]),color=color_point(Death_tr[point]),fill_color=color_point(Death_tr[point])).add_to(map1)
+map1	
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/map.gif">
+
+							<p></p>
+
+							<p>Animation of Terrorism Attacks in Turkey by Year</p>
+							<pre><code class="language-python">
+fig, ax = plt.subplots(figsize = (7,4))
+def animate(Year):
+    ax.clear()
+    ax.set_title('Animation Of Terrorism Attacks in Turkey\n'+ str(Year))
+    map2 = Basemap(projection='lcc',resolution='l' ,width=1800000, height=900000 ,lat_0=38.9637, lon_0=35.2433)
+    lat_gif=list(terror_turkey[terror_turkey['Year']==Year].Latitude)
+    long_gif=list(terror_turkey[terror_turkey['Year']==Year].Longitude)
+    x_gif,y_gif=map2(long_gif,lat_gif)
+    map2.scatter(x_gif, y_gif,s=[Death+Injured for Death,Injured in zip(terror_turkey[terror_turkey['Year']==Year].Death,terror_turkey[terror_turkey['Year']==Year].Injured)],color = 'r')
+    map2.drawcoastlines()
+    map2.drawcountries()
+    map2.fillcontinents(color='Black',lake_color='white', zorder = 1,alpha=0.4)
+    map2.drawmapboundary()
+ani = animation.FuncAnimation(fig,animate, list(terror_turkey.Year.unique()), interval = 1500) 
+
+ani.save('animation_tr.gif', writer='imagemagick', fps=1)
+plt.close(1)
+filename = 'animation_tr.gif'
+video = io.open(filename, 'r+b').read()
+encoded = base64.b64encode(video)
+HTML(data='''<img src="data:image/gif;base64,{0}" type="gif" />'''.format(encoded.decode('ascii')))		
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/trani.gif">
+
+							<p></p>
+
+							<p>Animation of Worldwide Terrorism Attacks by Year</p>
+							<pre><code class="language-python">
+fig, ax = plt.subplots(figsize = (10,6))
+def animate(Year):
+    ax.clear()
+    ax.set_title('Animation Of Terrorism Attacks'+'\n'+'Year:' +str(Year))
+    map3 = Basemap(projection='mill',llcrnrlat=-80,urcrnrlat=80, llcrnrlon=-180,urcrnrlon=180,lat_ts=20,resolution='c')
+    lat3=list(terror_csv[terror_csv['Year']==Year].Latitude)
+    long3=list(terror_csv[terror_csv['Year']==Year].Longitude)
+    x3,y3=map3(long3,lat3)
+    map3.scatter(x3, y3,s=[(Death+Injured)*0.1 for Death,Injured in zip(terror_csv[terror_csv['Year']==Year].Death,terror_csv[terror_csv['Year']==Year].Injured)],color = 'r')
+    map3.drawcoastlines()
+    map3.drawcountries()
+    map3.fillcontinents(color='Black',lake_color='white', zorder = 1,alpha=0.4)
+    map3.drawmapboundary()
+ani = animation.FuncAnimation(fig,animate,list(terror_csv.Year.unique()), interval = 1500)    
+ani.save('animation.gif', writer='imagemagick', fps=1)
+plt.close(1)
+filename = 'animation.gif'
+video = io.open(filename, 'r+b').read()
+encoded = base64.b64encode(video)
+HTML(data='''<img src="data:image/gif;base64,{0}" type="gif" />'''.format(encoded.decode('ascii')))
+							</code></pre>
+							<p></p>
+							<img class="image" src="terror_images/ani.gif">
+
 						</div>
 					</div>
 
@@ -67,6 +298,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/prism.js"></script>
+
 
 	</body>
 </html>
