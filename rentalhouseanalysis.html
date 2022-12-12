@@ -41,11 +41,77 @@
 							
 							<p>In this project, I analyzed one of Turkey's biggest problems, rental house prices, and created a dataset with Web Scraping using Python and Selenium libraries on <a target= "_blank" href="https:www.sahibinden.com"><span class="label">sahibinden.com</span></a>. And I made an analysis using Python and visualized using Power BI.</p>
 							
-							<li><a target= "_blank" href="https://github.com/frkakl/House_Rent_Prices_with_Scraping"><span class="label">You can access the Project's GitHub page.</span></a></li>
+							<li><a target= "_blank" href="https://github.com/frkakl/House_Rent_Prices_with_Scraping"><span class="label">You can access all project files and all codes in GitHub from here.</span></a></li>
 							
 							<p></p>
 
-							
+							<h4>Web Scraping Codes</h4>
+							<p>Importing Libraries</p>
+							<pre><code class="language-python">
+from selenium import webdriver
+from time import sleep
+import pandas as pd
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+import warnings
+warnings.filterwarnings("ignore")
+							</code></pre>
+							<p></p>
+							<p>Scraping from <a target= "_blank" href="https:www.sahibinden.com"><span class="label">sahibinden.com</span></a></p>
+							<pre><code class="language-python">
+#Information Lists
+titles_list = []
+msqr_list =[]
+nrooms_list = []
+loc_list = []
+prices_list = []
+
+
+for page  in range(50,90650,50):
+     driver = webdriver.Chrome(executable_path="..\chromedriver.exe")
+     #Page loop
+     driver.get("https://www.sahibinden.com/kiralik-daire?pagingOffset="+ str(page) +"&pagingSize=50&query_text_mf=kiral%C4%B1k+daire")
+     sleep(4)
+
+     #Items
+     item_titles = driver.find_elements("xpath",'//*[@id="searchResultsTable"]/tbody/tr[*]/td[2]')
+     for title in item_titles:
+          titles_list.append(title.text)
+
+     item_msqr = driver.find_elements("xpath",'//*[@id="searchResultsTable"]/tbody/tr[*]/td[3]')
+     for msqr in item_msqr:
+          msqr_list.append(msqr.text)
+
+     item_nrooms = driver.find_elements("xpath",'//*[@id="searchResultsTable"]/tbody/tr[*]/td[4]')
+     for nrooms in item_nrooms:
+          nrooms_list.append(nrooms.text)
+
+     item_loc = driver.find_elements("xpath",'//*[@id="searchResultsTable"]/tbody/tr[*]/td[7]')
+     for loc in item_loc:
+          loc_list.append(loc.text)
+
+     item_price = driver.find_elements("xpath",'//*[@id="searchResultsTable"]/tbody/tr[*]/td[5]')
+     for price in item_price:
+          prices_list.append(price.text)
+driver.close()
+
+#Create dataframe
+dataset = pd.DataFrame(zip(titles_list, msqr_list, nrooms_list, loc_list, prices_list), columns=["Title", "Square Meters", "Number of Rooms", "Location", "Price"])
+
+dataset["Price"] = dataset["Price"].str.replace("TL", "")
+
+excel_file = "Kira_Ev_Dataset.xlsx"
+
+#Export to Excel
+dataset.to_excel(excel_file)
+print("Dataset is written to Excel File successfully.")
+
+dataset
+							</code></pre>
+
+
+
 						</div>
 					</div>
 
