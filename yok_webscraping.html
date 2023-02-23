@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Yok Atlas Web Scraping Project</title>
+		<link rel="shortcut icon" type="image/png" href="images/photo.png"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/prism.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/photo.png" alt="" /></span><span class="title">Ömer Faruk Akal</span>
+							</a>
+
+						</div>
+					</header>
+
+<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Yok Atlas Web Scraping Project</h1>
+							<!--<span class="image main"><img src="images/covid.jpg" </span>-->
+							<p></p>
+							<p>Everyone knows, medical departments in universities are always one of the most preferred fields. In this project, I scraped 237 medical departments in Turkey's data from the Yok Atlas website using Python's web scraping framework Selenium. And I've analyzed it with Microsoft Excel.</p>
+							<p></p>
+							<li><a target= "_blank" href="https://yokatlas.yok.gov.tr/lisans-bolum.php?b=10206"><span class="label">You can access the Universities Medical Departments Data in Yok Atlas.</span></a></li>
+							<p></p>
+							<p>None On the Atlas website, there are data on these departments under approximately 26 different headings for each 237 Medical Department. I collected data from 16 of these 26 topics for each Medical Department.</p>
+							<p>You can see a example of scraping codes below.</p>
+							<p></p>
+							<p>Importing Libraries</p>
+							<pre><code class="language-python">
+from selenium import webdriver
+from time import sleep
+import pandas as pd
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+import warnings
+warnings.filterwarnings("ignore")
+							</code></pre>
+							<p></p>
+							<p>Codes I wrote for web scraping automation.</p>
+							<pre><code class="language-python">
+urls = [100210168 , 112610315 , 100590061 , 100710278 , 100810541 , 110510018 , 100910285 , 101110775 , 101190208 , 110010174 , 110010271 , 110010014 , 110090144 , 101410524 , 101411213 , 101410993 , 100310158 , 101510435 , 110670170 , 101990051 , 100110257 , 109710366 , 109790388 , 102710324 , 102910376 , 102910888 , 103010213 , 103110557 , 103310097 , 103410457 , 103510411 , 103610101 , 103810277 , 103910364 , 104110836 , 104111976 , 104111234 , 111210046 , 104210192 , 104210402 , 104510189 , 104810617 , 104810626 , 104890264 , 105010164 , 107710169 , 105110136 , 105310567 , 105310301 , 105410063 , 105410196 , 105610634 , 105611589 , 105690477 , 111610016 , 111610025 , 112910023 , 111110019 , 105710015 , 105710245 , 105910207 , 106010188 , 106110415 , 106210502 , 106390056 , 106410518 , 106610234 , 106610543 , 106770727 , 100610331 , 106910479 , 111410405 , 111570309 , 102510186 , 102510529 , 107210695 , 107410366 , 107610416 , 107610752 , 107690319 , 107010246 , 108110569 , 108210365 , 108210868 , 108290390 , 108310161 , 108610352 , 108610767 , 108710112 , 111010223 , 111091396 , 111091426 , 111091397 , 111091170 , 111010083 , 111091392 , 111091395 , 111091391 , 111091430 , 111010259 , 111010241 , 111010232 , 111091169 , 108810474 , 112771085 , 108910719 , 109090052 , 102610388 , 109210441 , 107910097 , 104310164 , 109410227 , 109810577 , 110210269 , 109970323 , 102310152 , 110310144 , 200110071 , 202910763 , 202990302 , 209210052 , 209210053 , 209210054 , 209210049 , 209210050 , 209210051 , 200290140 , 200290141 , 200290142 , 200511241 , 200511259 , 200610657 , 200611488 , 200610666 , 200690357 , 200690358 , 200690359 , 200712449 , 200712458 , 200712582 , 200910027 , 200910036 , 207610354 , 207610363 , 207650947 , 207650949 , 202610033 , 202610157 , 201911094 , 201911119 , 201990530 , 201990531 , 202390228 , 202390209 , 202390269 , 209310037 , 209310025 , 209310072 , 209310073 , 202490593 , 202412737 , 202490635 , 202490634 , 202490723 , 203111166 , 203110035 , 203110292 , 203110477 , 204790512 , 204713108 , 204712446 , 204712455 , 204790584 , 209410023 , 209410025 , 209410061 , 209410124 , 206210697 , 206290226 , 208410017 , 208410502 , 208450758 , 208450759 , 203511505 , 203511514 , 209610020 , 209610021 , 209610033 , 203910699 , 203910706 , 204010818 , 204010827 , 208810010 , 208810063 , 208810158 , 208810078 , 208810151 , 204111921 , 204110395 , 204191022 , 204110377 , 204110571 , 204112497 , 204590595 , 204590596 , 207710071 , 207710089 , 207710091 , 205411033 , 205411015 , 205411024 , 205810155 , 205810164 , 206552525 , 206552469 , 206552471 , 206552537 , 206552535 , 206552536 , 206110741 , 206110759 , 206111615 , 207910033 , 207910015 , 207950114 , 207950115 , 300112754 , 300112481 , 300112499 , 300710249 , 300710682 , 300511522 , 300590372 , 300510939 , 300513475 , 401710015]
+
+il = []
+ySayi = []
+
+driver = webdriver.Chrome(executable_path="..\chromedriver.exe")
+driver.maximize_window()
+for url in urls[1:]:
+    driver.get("https://yokatlas.yok.gov.tr/content/lisans-dynamic/1020c.php?y=" + str(url))
+    sleep(3)
+
+    il = []
+    il_value = driver.find_elements(By.XPATH,'/html/body/table/tbody/tr[*]/td[1]')
+    if len(il_value) == 0:
+        il.append("")  
+    else:
+        for value in il_value:
+            il.append(value.text)
+            il.append(value.text + " % Oran")
+
+    ySayi = []
+    ySayi_value = driver.find_elements(By.XPATH,'/html/body/table/tbody/tr[*]/td[2]') 
+    yOran_value = driver.find_elements(By.XPATH,'/html/body/table/tbody/tr[*]/td[3]')  
+    if len(ySayi_value) == 0:
+        ySayi.append("")
+    else:
+        for i in range(len(ySayi_value)):
+            ySayi.append(ySayi_value[i].text)
+            ySayi.append(yOran_value[i].text)
+
+    ds2 = pd.DataFrame(zip(il, ySayi))
+    ds = pd.merge(ds, ds2, on=0, how='outer')
+
+    print(ds)
+
+driver.close()
+    							</code></pre>
+							<p></p>
+							<p>Codes I wrote to transpose the scraped data and save it as an excel file.</p>
+							<pre><code class="language-python">
+ds.transpose().to_excel("gelinenIller.xlsx", index=False)
+							</code></pre>
+							<p></p>
+
+						</div>
+					</div>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<section>
+							<h2>Get in Touch</h2>
+							<ul class="icons">
+								<li><a target= "_blank" href="https://www.linkedin.com/in/ofarukakal/" class="icon brands style2 fa-linkedin"><span class="label">Linkedin</span></a></li>
+								<li><a target= "_blank"href="https://github.com/ofarukakal" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+								<li><a target= "_blank"href="https://twitter.com/ofarukakal" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a target= "_blank"href="mailto:o.farukakal@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+							</ul>
+						</section>
+						<ul class="copyright">
+							<li>&copy; Untitled. All rights reserved</li><li>Main Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/prism.js"></script>
+
+
+	</body>
+</html>
