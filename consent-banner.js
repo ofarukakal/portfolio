@@ -173,8 +173,14 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
+            console.log('Banner updating consent with:', preferences);
+            
             if (typeof window.updateGTMConsent === 'function') {
+                console.log('Found updateGTMConsent, calling...');
                 window.updateGTMConsent(preferences);
+                console.log('Called updateGTMConsent');
+            } else {
+                console.error('updateGTMConsent not found on window!');
             }
             
             const banner = document.getElementById('consentBanner');
@@ -182,6 +188,7 @@
         },
         
         acceptAll: function() {
+            console.log('Accepting all...');
             this.updateConsent({
                 ad: true,
                 analytics: true,
@@ -191,6 +198,7 @@
         },
         
         rejectAll: function() {
+            console.log('Rejecting all...');
             this.updateConsent({
                 ad: false,
                 analytics: false,
@@ -200,6 +208,7 @@
         },
         
         savePreferences: function() {
+            console.log('Saving preferences...');
             const analytics = document.getElementById('analytics_consent');
             const ads = document.getElementById('ads_consent');
             const personalization = document.getElementById('personalization_consent');
