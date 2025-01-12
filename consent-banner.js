@@ -183,7 +183,7 @@
             });
             
             // LocalStorage'a kaydet
-            localStorage.setItem('consent_preferences', JSON.stringify(preferences));
+            localStorage.setItem('consentpreferences', JSON.stringify(preferences));
             console.log('Saved to localStorage');
             
             const banner = document.getElementById('consentBanner');
