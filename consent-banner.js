@@ -173,6 +173,7 @@
     //OFA-consent-preferences
     
     //31
+    //31
     window.consentManager = {
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
@@ -180,12 +181,10 @@
             // LocalStorage'a kaydet
             window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
             
-            // DataLayer'a gönder
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'consent_update',
-                'consent_settings': preferences
-            });
+            // GTM consent'i güncelle
+            if (typeof window.updateGTMConsent === 'function') {
+                window.updateGTMConsent(preferences);
+            }
             
             // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
