@@ -173,12 +173,33 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
-            // LocalStorage'a kaydet
-            window.localStorage.setItem('consent_preferences', JSON.stringify(preferences));
+            console.log('Updating consent with preferences:', preferences);
             
-            // GTM consent'i güncelle
-            if (typeof window.updateGTMConsent === 'function') {
-                window.updateGTMConsent(preferences);
+            try {
+                // LocalStorage'a kaydet
+                const storageKey = 'consent_preferences';
+                const storageValue = JSON.stringify(preferences);
+                
+                console.log('Saving to localStorage:', {
+                    key: storageKey,
+                    value: storageValue
+                });
+                
+                window.localStorage.setItem(storageKey, storageValue);
+                
+                // Kaydedildiğini kontrol et
+                const savedValue = window.localStorage.getItem(storageKey);
+                console.log('Verified localStorage value:', savedValue);
+                
+                // GTM consent'i güncelle
+                if (typeof window.updateGTMConsent === 'function') {
+                    console.log('Updating GTM consent...');
+                    window.updateGTMConsent(preferences);
+                } else {
+                    console.error('updateGTMConsent function not found');
+                }
+            } catch (error) {
+                console.error('Error in localStorage operations:', error);
             }
             
             // Banner'ı kaldır
@@ -187,6 +208,7 @@
         },
         
         acceptAll: function() {
+            console.log('Accepting all...');
             this.updateConsent({
                 ad: true,
                 analytics: true,
@@ -196,6 +218,7 @@
         },
         
         rejectAll: function() {
+            console.log('Rejecting all...');
             this.updateConsent({
                 ad: false,
                 analytics: false,
@@ -205,6 +228,7 @@
         },
         
         savePreferences: function() {
+            console.log('Saving preferences...');
             const analytics = document.getElementById('analytics_consent');
             const ads = document.getElementById('ads_consent');
             const personalization = document.getElementById('personalization_consent');
