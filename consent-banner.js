@@ -173,13 +173,21 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
-            // GTM consent'i güncelle
-            if (typeof window.updateGTMConsent === 'function') {
-                window.updateGTMConsent(preferences);
-                console.log('GTM consent updated with:', preferences);
+            // 1. LocalStorage'a kaydet
+            try {
+                localStorage.setItem('consent_preferences', JSON.stringify(preferences));
+                console.log('Preferences saved to localStorage:', preferences);
+            } catch (e) {
+                console.error('LocalStorage error:', e);
             }
             
-            // Banner'ı kaldır
+            // 2. GTM consent'i güncelle
+            if (typeof window.updateGTMConsent === 'function') {
+                window.updateGTMConsent(preferences);
+                console.log('GTM consent updated');
+            }
+            
+            // 3. Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
         },
