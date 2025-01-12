@@ -171,25 +171,14 @@
     
     document.body.appendChild(banner);
     
-    // Consent Manager (aynı)
+    // Consent Manager
     window.consentManager = {
         updateConsent: function(preferences) {
-            document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000';
+            // Cookie'yi kaydet
+            document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
-            if (window.gtag) {
-                window.gtag('consent', 'update', {
-                    'ad_storage': preferences.ad ? 'granted' : 'denied',
-                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                    'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                    'personalization_storage': preferences.personalization ? 'granted' : 'denied',
-                    'security_storage': 'granted'
-                });
-            }
-            
-            const banner = document.getElementById('consentBanner');
-            if (banner) banner.remove();
+            // Sayfayı yenile
+            location.reload();
         },
         
         acceptAll: function() {
@@ -211,11 +200,15 @@
         },
         
         savePreferences: function() {
+            const analytics = document.getElementById('analytics_consent');
+            const ads = document.getElementById('ads_consent');
+            const personalization = document.getElementById('personalization_consent');
+            
             this.updateConsent({
-                ad: document.getElementById('ads_consent').checked,
-                analytics: document.getElementById('analytics_consent').checked,
+                ad: ads ? ads.checked : false,
+                analytics: analytics ? analytics.checked : false,
                 functionality: true,
-                personalization: document.getElementById('personalization_consent').checked
+                personalization: personalization ? personalization.checked : false
             });
         }
     };
