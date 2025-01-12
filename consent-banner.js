@@ -174,6 +174,7 @@
     window.consentManager = {
         updateConsent: function(preferences) {
             // 1. Cookie'yi kaydet
+            console.log('Updating consent with preferences:', preferences);
             document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
             // 2. DataLayer event'i gönder
@@ -193,6 +194,10 @@
                 'ad_user_data': preferences.ad ? 'granted' : 'denied',
                 'ad_personalization': preferences.ad ? 'granted' : 'denied'
             });
+
+            console.log('Pushing to dataLayer:', dataLayerEvent);
+            window.dataLayer.push(dataLayerEvent);
+
             
             // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
