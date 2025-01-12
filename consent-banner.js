@@ -175,13 +175,13 @@
         updateConsent: function(preferences) {
             console.log('Banner updating consent with:', preferences);
             
-            if (typeof window.updateGTMConsent === 'function') {
-                console.log('Found updateGTMConsent, calling...');
-                window.updateGTMConsent(preferences);
-                console.log('Called updateGTMConsent');
-            } else {
-                console.error('updateGTMConsent not found on window!');
-            }
+            // DataLayer'a gönder
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'consent_update',
+                consent_preferences: preferences
+            });
+            console.log('Pushed to dataLayer');
             
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
