@@ -1,159 +1,137 @@
 (function() {
     const banner = document.createElement('div');
     banner.id = 'consentBanner';
+    //31
     banner.innerHTML = `
     <style>
         #gdpr_consent_banner_v2_unique_2024 {
-            all: initial;
             position: fixed !important;
             bottom: 24px !important;
             left: 50% !important;
             transform: translateX(-50%) !important;
             background: #FFFFFF !important;
-            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.12) !important;
-            border-radius: 12px !important;
+            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.08) !important;
+            border-radius: 16px !important;
             padding: 24px !important;
             width: 90% !important;
             max-width: 500px !important;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             z-index: 99999 !important;
-            box-sizing: border-box !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 * {
-            all: unset;
-            box-sizing: border-box !important;
-        }
-
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_heading_x92j {
-            all: initial;
-            display: block !important;
-            font-family: inherit !important;
-            margin: 0 0 12px 0 !important;
-            font-size: 18px !important;
+        #gdpr_consent_banner_v2_unique_2024 h2 {
+            font-size: 20px !important;
             color: #1a1a1a !important;
             font-weight: 600 !important;
-            line-height: 1.5 !important;
-            text-transform: none !important;
+            margin: 0 0 12px 0 !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_text_p4k2 {
-            all: initial;
-            display: block !important;
-            font-family: inherit !important;
-            margin: 0 0 20px 0 !important;
+        #gdpr_consent_banner_v2_unique_2024 p {
             font-size: 14px !important;
             color: #666666 !important;
             line-height: 1.5 !important;
+            margin: 0 0 24px 0 !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_options_wrapper_m8n3 {
-            margin-bottom: 24px !important;
-        }
-
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_option_item_y7h2 {
+        #gdpr_consent_banner_v2_unique_2024 .consent-option {
             display: flex !important;
             align-items: center !important;
-            margin-bottom: 12px !important;
+            margin-bottom: 16px !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_toggle_wrapper_f9p4 {
+        #gdpr_consent_banner_v2_unique_2024 .toggle {
             position: relative !important;
-            display: inline-block !important;
-            width: 36px !important;
-            height: 20px !important;
+            width: 40px !important;
+            height: 24px !important;
             margin-right: 12px !important;
-        }
-
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_toggle_input_k3m7 {
-            opacity: 0 !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
-
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_toggle_slider_w5n8 {
-            position: absolute !important;
+            background: #e4e4e7 !important;
+            border-radius: 12px !important;
             cursor: pointer !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            background-color: #e4e4e7 !important;
-            transition: .3s !important;
-            border-radius: 20px !important;
+            transition: background-color 0.3s !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_button_group_h6t9 {
+        #gdpr_consent_banner_v2_unique_2024 .toggle.active {
+            background: #4f46e5 !important;
+        }
+
+        #gdpr_consent_banner_v2_unique_2024 .toggle::after {
+            content: '' !important;
+            position: absolute !important;
+            width: 20px !important;
+            height: 20px !important;
+            background: white !important;
+            border-radius: 50% !important;
+            top: 2px !important;
+            left: 2px !important;
+            transition: transform 0.3s !important;
+        }
+
+        #gdpr_consent_banner_v2_unique_2024 .toggle.active::after {
+            transform: translateX(16px) !important;
+        }
+
+        #gdpr_consent_banner_v2_unique_2024 .consent-label {
+            font-size: 14px !important;
+            color: #1a1a1a !important;
+        }
+
+        #gdpr_consent_banner_v2_unique_2024 .consent-buttons {
             display: flex !important;
             gap: 12px !important;
+            margin-top: 24px !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_primary_btn_r4k8 {
-            all: initial;
-            display: inline-block !important;
-            font-family: inherit !important;
-            background-color: #2563eb !important;
+        #gdpr_consent_banner_v2_unique_2024 button {
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            border: none !important;
+            transition: opacity 0.2s !important;
+        }
+
+        #gdpr_consent_banner_v2_unique_2024 button:hover {
+            opacity: 0.9 !important;
+        }
+
+        #gdpr_consent_banner_v2_unique_2024 .primary-button {
+            background: #4f46e5 !important;
             color: white !important;
             flex: 1 !important;
-            padding: 10px 20px !important;
-            border: none !important;
-            border-radius: 6px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            cursor: pointer !important;
-            text-align: center !important;
         }
 
-        #gdpr_consent_banner_v2_unique_2024 .gdpr_consent_secondary_btn_l2j5 {
-            all: initial;
-            display: inline-block !important;
-            font-family: inherit !important;
-            background-color: #f4f4f5 !important;
+        #gdpr_consent_banner_v2_unique_2024 .secondary-button {
+            background: #f4f4f5 !important;
             color: #1a1a1a !important;
-            padding: 10px 20px !important;
-            border: none !important;
-            border-radius: 6px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            cursor: pointer !important;
-            text-align: center !important;
         }
     </style>
 
     <div id="gdpr_consent_banner_v2_unique_2024">
-        <h2 class="gdpr_consent_heading_x92j">Çerez Tercihleri</h2>
-        <p class="gdpr_consent_text_p4k2">Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz. Tercihlerinizi istediğiniz zaman güncelleyebilirsiniz.</p>
+        <h2>Çerez Tercihleri</h2>
+        <p>Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz. Tercihlerinizi istediğiniz zaman güncelleyebilirsiniz.</p>
         
-        <div class="gdpr_consent_options_wrapper_m8n3">
-            <div class="gdpr_consent_option_item_y7h2">
-                <label class="gdpr_consent_toggle_wrapper_f9p4">
-                    <input type="checkbox" class="gdpr_consent_toggle_input_k3m7" id="analytics_consent_x8v2" checked>
-                    <span class="gdpr_consent_toggle_slider_w5n8"></span>
-                </label>
-                <span class="gdpr_consent_label_t6m3">Analitik Çerezler</span>
+        <div class="consent-options">
+            <div class="consent-option">
+                <div class="toggle active"></div>
+                <span class="consent-label">Analitik Çerezler</span>
             </div>
             
-            <div class="gdpr_consent_option_item_y7h2">
-                <label class="gdpr_consent_toggle_wrapper_f9p4">
-                    <input type="checkbox" class="gdpr_consent_toggle_input_k3m7" id="ads_consent_x8v2" checked>
-                    <span class="gdpr_consent_toggle_slider_w5n8"></span>
-                </label>
-                <span class="gdpr_consent_label_t6m3">Reklam Çerezleri</span>
+            <div class="consent-option">
+                <div class="toggle active"></div>
+                <span class="consent-label">Reklam Çerezleri</span>
             </div>
             
-            <div class="gdpr_consent_option_item_y7h2">
-                <label class="gdpr_consent_toggle_wrapper_f9p4">
-                    <input type="checkbox" class="gdpr_consent_toggle_input_k3m7" id="personalization_consent_x8v2" checked>
-                    <span class="gdpr_consent_toggle_slider_w5n8"></span>
-                </label>
-                <span class="gdpr_consent_label_t6m3">Kişiselleştirme Çerezleri</span>
+            <div class="consent-option">
+                <div class="toggle active"></div>
+                <span class="consent-label">Kişiselleştirme Çerezleri</span>
             </div>
         </div>
         
-        <div class="gdpr_consent_button_group_h6t9">
-            <button class="gdpr_consent_primary_btn_r4k8" onclick="consentManager.acceptAll()">Tümünü Kabul Et</button>
-            <button class="gdpr_consent_secondary_btn_l2j5" onclick="consentManager.savePreferences()">Tercihleri Kaydet</button>
-            <button class="gdpr_consent_secondary_btn_l2j5" onclick="consentManager.rejectAll()">Reddet</button>
+        <div class="consent-buttons">
+            <button class="primary-button" onclick="consentManager.acceptAll()">Tümünü Kabul Et</button>
+            <button class="secondary-button" onclick="consentManager.savePreferences()">Tercihleri Kaydet</button>
+            <button class="secondary-button" onclick="consentManager.rejectAll()">Reddet</button>
         </div>
     </div>
     `;
