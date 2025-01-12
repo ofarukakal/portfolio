@@ -177,8 +177,32 @@
             // Cookie'yi kaydet
             document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
-            // Sayfayı yenile
-            location.reload();
+            // Consent state'i güncelle
+            const consentState = {
+                'ad_storage': preferences.ad ? 'granted' : 'denied',
+                'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                'personalization_storage': preferences.personalization ? 'granted' : 'denied',
+                'security_storage': 'granted'
+            };
+
+            // Google Tag Manager'a consent güncellemesini gönder
+            if (window.gtag) {
+                window.gtag('consent', 'update', consentState);
+            }
+
+            // Google Tag Manager dataLayer'a push
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'consent_update',
+                consent_state: consentState
+            });
+            
+            // Banner'ı kaldır
+            const banner = document.getElementById('consentBanner');
+            if (banner) banner.remove();
         },
         
         acceptAll: function() {
