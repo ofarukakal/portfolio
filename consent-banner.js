@@ -174,7 +174,6 @@
     window.consentManager = {
         updateConsent: function(preferences) {
             // 1. Cookie'yi kaydet
-            console.log('Updating consent with preferences:', preferences);
             document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
             // 2. DataLayer event'i gönder
@@ -183,6 +182,9 @@
                 'event': 'consent_update',
                 'consent_settings': preferences
             });
+
+            console.log('Updating consent with preferences:', preferences);
+
             
             // 3. Consent state'i gtag ile güncelle
             window.gtag("consent", "update", {
