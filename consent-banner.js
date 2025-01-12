@@ -177,7 +177,7 @@
             console.log('Updating consent with:', preferences);
             
             // LocalStorage'a kaydet
-            localStorage.setItem('OFA-consent-preferences', JSON.stringify(preferences));
+            localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
             console.log('Saved to localStorage');
             
             // Consent'i güncelle
