@@ -2,21 +2,42 @@
     // Banner HTML'ini oluştur
     const banner = document.createElement('div');
     banner.id = 'consentBanner';
-    banner.style.cssText = 'display:block; position:fixed; bottom:0; left:0; right:0; background:#fff; box-shadow:0 -2px 10px rgba(0,0,0,0.1); z-index:9999; padding:20px;';
+    banner.style.cssText = 'display:block; position:fixed; bottom:0; left:0; right:0; background:#fff; box-shadow:0 -2px 10px rgba(0,0,0,0.1); z-index:9999; padding:20px; font-family:Arial,sans-serif;';
     
     banner.innerHTML = `
         <div style="max-width:1200px; margin:0 auto;">
-            <h2>Çerez Tercihleri</h2>
-            <p>Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz.</p>
-            <div>
-                <label><input type="checkbox" id="analytics_consent" checked> Analitik Çerezler</label>
-                <label><input type="checkbox" id="ads_consent" checked> Reklam Çerezleri</label>
-                <label><input type="checkbox" id="personalization_consent" checked> Kişiselleştirme Çerezleri</label>
+            <h2 style="margin:0 0 10px 0;">Çerez Tercihleri</h2>
+            <p style="margin:0 0 20px 0;">Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz.</p>
+            <div style="margin:20px 0;">
+                <div style="margin-bottom:10px;">
+                    <label style="display:flex;align-items:center;gap:8px;">
+                        <input type="checkbox" id="analytics_consent" checked>
+                        <span>Analitik Çerezler</span>
+                    </label>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <label style="display:flex;align-items:center;gap:8px;">
+                        <input type="checkbox" id="ads_consent" checked>
+                        <span>Reklam Çerezleri</span>
+                    </label>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <label style="display:flex;align-items:center;gap:8px;">
+                        <input type="checkbox" id="personalization_consent" checked>
+                        <span>Kişiselleştirme Çerezleri</span>
+                    </label>
+                </div>
             </div>
-            <div>
-                <button onclick="consentManager.acceptAll()">Tümünü Kabul Et</button>
-                <button onclick="consentManager.savePreferences()">Tercihleri Kaydet</button>
-                <button onclick="consentManager.rejectAll()">Tümünü Reddet</button>
+            <div style="display:flex;gap:10px;">
+                <button onclick="consentManager.acceptAll()" style="padding:10px 20px;background:#007bff;color:white;border:none;border-radius:5px;cursor:pointer;">
+                    Tümünü Kabul Et
+                </button>
+                <button onclick="consentManager.savePreferences()" style="padding:10px 20px;background:#6c757d;color:white;border:none;border-radius:5px;cursor:pointer;">
+                    Tercihleri Kaydet
+                </button>
+                <button onclick="consentManager.rejectAll()" style="padding:10px 20px;background:#6c757d;color:white;border:none;border-radius:5px;cursor:pointer;">
+                    Tümünü Reddet
+                </button>
             </div>
         </div>
     `;
