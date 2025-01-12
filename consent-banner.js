@@ -175,6 +175,7 @@
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
+            // DataLayer'a gönder
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 event: 'consent_update',
@@ -188,6 +189,10 @@
                     security_storage: 'granted'
                 }
             });
+            
+            // LocalStorage'a kaydet
+            localStorage.setItem('consentpreferences', JSON.stringify(preferences));
+            console.log('Saved to localStorage');
             
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
