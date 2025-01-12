@@ -172,7 +172,7 @@
     document.body.appendChild(banner);
     //OFA-consent-preferences
     
-    //31
+    //3113
     window.consentManager = {
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
@@ -181,13 +181,16 @@
             window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
             
             // Consent'i güncelle
-            window.gtag('consent', 'update', {
-                'ad_storage': preferences.ad ? 'granted' : 'denied',
-                'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                'personalization_storage': preferences.personalization ? 'granted' : 'denied'
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push(function() {
+                this.consent.update({
+                    'ad_storage': preferences.ad ? 'granted' : 'denied',
+                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                    'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                    'personalization_storage': preferences.personalization ? 'granted' : 'denied'
+                });
             });
             
             // Banner'ı kaldır
