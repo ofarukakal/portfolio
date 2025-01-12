@@ -172,6 +172,8 @@
     document.body.appendChild(banner);
     
     window.consentManager = {
+        /*
+        */
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
