@@ -173,6 +173,7 @@
     //OFA-consent-preferences
     
     window.consentManager = {
+        //31
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
@@ -180,16 +181,18 @@
             localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
             console.log('Saved to localStorage');
             
-            // Consent'i güncelle
-            window.gtag('consent', 'update', {
-                ad_storage: preferences.ad ? 'granted' : 'denied',
-                ad_user_data: preferences.ad ? 'granted' : 'denied',
-                ad_personalization: preferences.ad ? 'granted' : 'denied',
-                analytics_storage: preferences.analytics ? 'granted' : 'denied',
-                functionality_storage: preferences.functionality ? 'granted' : 'denied',
-                personalization_storage: preferences.personalization ? 'granted' : 'denied'
+            // DataLayer'a gönder
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'consent_update',
+                'ad_storage': preferences.ad ? 'granted' : 'denied',
+                'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                'personalization_storage': preferences.personalization ? 'granted' : 'denied'
             });
-            console.log('Updated consent state');
+            console.log('Pushed to dataLayer');
             
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
