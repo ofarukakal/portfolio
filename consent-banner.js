@@ -177,18 +177,11 @@
             // Cookie'yi kaydet
             document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
-            // GTM consent'i direkt güncelle
-            if (window.gtag) {
-                window.gtag('consent', 'update', {
-                    'ad_storage': preferences.ad ? 'granted' : 'denied',
-                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                    'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                    'personalization_storage': preferences.personalization ? 'granted' : 'denied',
-                    'security_storage': 'granted'
-                });
-            }
+            // Event gönder
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'consent_update'
+            });
             
             // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
