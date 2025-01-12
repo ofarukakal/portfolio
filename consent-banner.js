@@ -195,9 +195,7 @@
                 'ad_personalization': preferences.ad ? 'granted' : 'denied'
             });
 
-            console.log('Pushing to dataLayer:', dataLayerEvent);
-            window.dataLayer.push(dataLayerEvent);
-
+            console.log('Pushing to dataLayer');
             
             // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
