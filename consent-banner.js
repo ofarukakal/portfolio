@@ -172,8 +172,8 @@
     document.body.appendChild(banner);
     //OFA-consent-preferences
     
+    //31
     window.consentManager = {
-        //31
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
@@ -184,21 +184,28 @@
             // DataLayer'a gönder
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'consent_update',
-                'ad_storage': preferences.ad ? 'granted' : 'denied',
-                'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                'personalization_storage': preferences.personalization ? 'granted' : 'denied'
+                event: 'consent_update',
+                consent_settings: {
+                    ad_storage: preferences.ad ? 'granted' : 'denied',
+                    ad_user_data: preferences.ad ? 'granted' : 'denied',
+                    ad_personalization: preferences.ad ? 'granted' : 'denied',
+                    analytics_storage: preferences.analytics ? 'granted' : 'denied',
+                    functionality_storage: preferences.functionality ? 'granted' : 'denied',
+                    personalization_storage: preferences.personalization ? 'granted' : 'denied',
+                    security_storage: 'granted'
+                }
             });
             console.log('Pushed to dataLayer');
             
             const banner = document.getElementById('consentBanner');
-            if (banner) banner.remove();
+            if (banner) {
+                banner.remove();
+                console.log('Banner removed');
+            }
         },
         
         acceptAll: function() {
+            console.log('Accepting all...');
             this.updateConsent({
                 ad: true,
                 analytics: true,
@@ -208,6 +215,7 @@
         },
         
         rejectAll: function() {
+            console.log('Rejecting all...');
             this.updateConsent({
                 ad: false,
                 analytics: false,
@@ -217,6 +225,7 @@
         },
         
         savePreferences: function() {
+            console.log('Saving preferences...');
             const analytics = document.getElementById('analytics_consent');
             const ads = document.getElementById('ads_consent');
             const personalization = document.getElementById('personalization_consent');
