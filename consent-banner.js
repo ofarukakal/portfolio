@@ -173,8 +173,8 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
-            // Cookie'yi kaydet
-            document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
+            // LocalStorage'a kaydet
+            localStorage.setItem('consent_preferences', JSON.stringify(preferences));
             
             // GTM consent'i güncelle
             if (typeof window.updateGTMConsent === 'function') {
