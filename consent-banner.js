@@ -173,28 +173,26 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
-            // Cookie'yi kaydet
+            // 1. Cookie'yi kaydet
             document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
-            // Debug için log
-            console.log('Window gtag:', window.gtag);
-            console.log('DataLayer:', window.dataLayer);
+            // 2. DataLayer event'i gönder
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'consent_update',
+                'consent_settings': preferences
+            });
             
-            try {
-                // GA4 consent mode API'sini çağır
-                window.gtag('consent', 'update', {
-                    'ad_storage': preferences.ad ? 'granted' : 'denied',
-                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                    'personalization_storage': preferences.personalization ? 'granted' : 'denied',
-                    'security_storage': 'granted',
-                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                    'ad_personalization': preferences.ad ? 'granted' : 'denied'
-                });
-                console.log('Consent update called successfully');
-            } catch (error) {
-                console.error('Error updating consent:', error);
-            }
+            // 3. Consent state'i gtag ile güncelle
+            window.gtag("consent", "update", {
+                'ad_storage': preferences.ad ? 'granted' : 'denied',
+                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                'personalization_storage': preferences.personalization ? 'granted' : 'denied',
+                'security_storage': 'granted',
+                'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                'ad_personalization': preferences.ad ? 'granted' : 'denied'
+            });
             
             // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
