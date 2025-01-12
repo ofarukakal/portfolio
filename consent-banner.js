@@ -178,6 +178,7 @@
             
             // GA4 consent mode API'sini çağır
             if (typeof window.gtag === 'function') {
+                console.log('Updating consent with gtag:', preferences);
                 window.gtag('consent', 'update', {
                     'ad_storage': preferences.ad ? 'granted' : 'denied',
                     'analytics_storage': preferences.analytics ? 'granted' : 'denied',
@@ -186,6 +187,21 @@
                     'security_storage': 'granted',
                     'ad_user_data': preferences.ad ? 'granted' : 'denied',
                     'ad_personalization': preferences.ad ? 'granted' : 'denied'
+                });
+            } else {
+                console.log('gtag function not found');
+                // gtag fonksiyonu yoksa dataLayer'a push edelim
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push(function() {
+                    this.gtag('consent', 'update', {
+                        'ad_storage': preferences.ad ? 'granted' : 'denied',
+                        'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                        'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                        'personalization_storage': preferences.personalization ? 'granted' : 'denied',
+                        'security_storage': 'granted',
+                        'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                        'ad_personalization': preferences.ad ? 'granted' : 'denied'
+                    });
                 });
             }
             
