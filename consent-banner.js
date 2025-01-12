@@ -174,7 +174,6 @@
     
     //31
     window.consentManager = {
-        //31
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
@@ -183,20 +182,27 @@
             console.log('Saved to localStorage');
             
             // GTM consent'i güncelle
-            window.gtag('consent', 'update', {
-                'ad_storage': preferences.ad ? 'granted' : 'denied',
-                'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                'personalization_storage': preferences.personalization ? 'granted' : 'denied',
-                'security_storage': 'granted'
-            });
-            console.log('Updated GTM consent');
+            if (typeof gtag === 'function') {
+                gtag('consent', 'update', {
+                    'ad_storage': preferences.ad ? 'granted' : 'denied',
+                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                    'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                    'personalization_storage': preferences.personalization ? 'granted' : 'denied',
+                    'security_storage': 'granted'
+                });
+                console.log('Updated GTM consent');
+            } else {
+                console.error('gtag not found');
+            }
             
             // Banner'ı kaldır
-            document.getElementById('consentBanner').style.display = 'none';
-            console.log('Banner hidden');
+            const banner = document.getElementById('consentBanner');
+            if (banner && banner.parentNode) {
+                banner.parentNode.removeChild(banner);
+                console.log('Banner removed');
+            }
         },
         
         acceptAll: function() {
@@ -233,4 +239,10 @@
             });
         }
     };
+    
+    // Click event'lerini ekle
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.primary-button').onclick = window.consentManager.acceptAll;
+        document.querySelector('.secondary-button').onclick = window.consentManager.rejectAll;
+    });
 })();
