@@ -173,62 +173,59 @@
     //OFA-consent-preferences
     
     //31
-    (function() {
-        // ... banner HTML ve stiller aynı ...
-        
-        window.consentManager = {
-            updateConsent: function(preferences) {
-                console.log('Updating consent with:', preferences);
-                
-                // LocalStorage'a kaydet
-                window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
-                
-                // Consent'i güncelle
-                window.gtag('consent', 'update', {
-                    'ad_storage': preferences.ad ? 'granted' : 'denied',
-                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                    'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                    'personalization_storage': preferences.personalization ? 'granted' : 'denied'
-                });
-                
-                // Banner'ı kaldır
-                const banner = document.getElementById('consentBanner');
-                if (banner && banner.parentNode) {
-                    banner.parentNode.removeChild(banner);
-                }
-            },
+    window.consentManager = {
+        updateConsent: function(preferences) {
+            console.log('Updating consent with:', preferences);
             
-            acceptAll: function() {
-                this.updateConsent({
-                    ad: true,
-                    analytics: true,
-                    functionality: true,
-                    personalization: true
-                });
-            },
+            // LocalStorage'a kaydet
+            window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
             
-            rejectAll: function() {
-                this.updateConsent({
-                    ad: false,
-                    analytics: false,
-                    functionality: false,
-                    personalization: false
-                });
-            },
+            // Consent'i güncelle
+            window.gtag('consent', 'update', {
+                'ad_storage': preferences.ad ? 'granted' : 'denied',
+                'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                'personalization_storage': preferences.personalization ? 'granted' : 'denied'
+            });
             
-            savePreferences: function() {
-                const analytics = document.getElementById('analytics_consent');
-                const ads = document.getElementById('ads_consent');
-                const personalization = document.getElementById('personalization_consent');
-                
-                this.updateConsent({
-                    ad: ads ? ads.checked : false,
-                    analytics: analytics ? analytics.checked : false,
-                    functionality: true,
-                    personalization: personalization ? personalization.checked : false
-                });
+            // Banner'ı kaldır
+            const banner = document.getElementById('consentBanner');
+            if (banner && banner.parentNode) {
+                banner.parentNode.removeChild(banner);
             }
-        };
-    })();
+        },
+        
+        acceptAll: function() {
+            this.updateConsent({
+                ad: true,
+                analytics: true,
+                functionality: true,
+                personalization: true
+            });
+        },
+        
+        rejectAll: function() {
+            this.updateConsent({
+                ad: false,
+                analytics: false,
+                functionality: false,
+                personalization: false
+            });
+        },
+        
+        savePreferences: function() {
+            const analytics = document.getElementById('analytics_consent');
+            const ads = document.getElementById('ads_consent');
+            const personalization = document.getElementById('personalization_consent');
+            
+            this.updateConsent({
+                ad: ads ? ads.checked : false,
+                analytics: analytics ? analytics.checked : false,
+                functionality: true,
+                personalization: personalization ? personalization.checked : false
+            });
+        }
+    };
+})();
