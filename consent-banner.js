@@ -174,34 +174,29 @@
     
     //31
     window.consentManager = {
+        //31
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
             // LocalStorage'a kaydet
-            localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
+            window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
             console.log('Saved to localStorage');
             
-            // DataLayer'a gönder
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                event: 'consent_update',
-                consent_settings: {
-                    ad_storage: preferences.ad ? 'granted' : 'denied',
-                    ad_user_data: preferences.ad ? 'granted' : 'denied',
-                    ad_personalization: preferences.ad ? 'granted' : 'denied',
-                    analytics_storage: preferences.analytics ? 'granted' : 'denied',
-                    functionality_storage: preferences.functionality ? 'granted' : 'denied',
-                    personalization_storage: preferences.personalization ? 'granted' : 'denied',
-                    security_storage: 'granted'
-                }
+            // GTM consent'i güncelle
+            window.gtag('consent', 'update', {
+                'ad_storage': preferences.ad ? 'granted' : 'denied',
+                'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                'personalization_storage': preferences.personalization ? 'granted' : 'denied',
+                'security_storage': 'granted'
             });
-            console.log('Pushed to dataLayer');
+            console.log('Updated GTM consent');
             
-            const banner = document.getElementById('consentBanner');
-            if (banner) {
-                banner.remove();
-                console.log('Banner removed');
-            }
+            // Banner'ı kaldır
+            document.getElementById('consentBanner').style.display = 'none';
+            console.log('Banner hidden');
         },
         
         acceptAll: function() {
