@@ -128,7 +128,7 @@
                 
                 <div class="consent-option">
                     <label class="toggle">
-                        <input type="checkbox" id="ads_consent" checked>
+                        <input type="checkbox" id="ad_consent" checked>
                         <span class="slider"></span>
                     </label>
                     <span class="consent-label">Reklam Çerezleri</span>
@@ -152,9 +152,7 @@
     `;
 
     document.body.appendChild(banner);
-    //OFA-consent-preferences
 
-    //31
     window.consentManager = {
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
@@ -173,37 +171,38 @@
                 banner.parentNode.removeChild(banner);
             }
         },
-    
+
         acceptAll: function() {
             this.updateConsent({
                 analytics: true,
                 ad: true,
                 personalization: true,
-                functionality: true  // Zorunlu çerezler her zaman true olmalı
+                functionality: true
             });
         },
-    
+
         rejectAll: function() {
             this.updateConsent({
                 analytics: false,
                 ad: false,
                 personalization: false,
-                functionality: true  // Zorunlu çerezler her zaman true olmalı
+                functionality: true
             });
         },
-    
+
         savePreferences: function() {
             const analytics = document.getElementById('analytics_consent');
-            const ads = document.getElementById('ads_consent');
+            const ad = document.getElementById('ad_consent');
             const personalization = document.getElementById('personalization_consent');
-    
+
             const preferences = {
                 analytics: analytics ? analytics.checked : false,
-                ad: ads ? ads.checked : false,
+                ad: ad ? ad.checked : false,
                 personalization: personalization ? personalization.checked : false,
-                functionality: true  // Zorunlu çerezler her zaman true olmalı
+                functionality: true
             };
-    
+
             this.updateConsent(preferences);
         }
     };
+})();
