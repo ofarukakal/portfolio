@@ -173,12 +173,22 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
+            console.log('Saving preferences:', preferences);
+            
             // LocalStorage'a kaydet
-            localStorage.setItem('consent_preferences', JSON.stringify(preferences));
+            try {
+                localStorage.setItem('consent_preferences', JSON.stringify(preferences));
+                console.log('Preferences saved to localStorage');
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
             
             // GTM consent'i güncelle
             if (typeof window.updateGTMConsent === 'function') {
                 window.updateGTMConsent(preferences);
+                console.log('GTM consent updated');
+            } else {
+                console.log('updateGTMConsent not found');
             }
             
             // Banner'ı kaldır
