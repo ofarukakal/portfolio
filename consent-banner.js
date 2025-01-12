@@ -182,15 +182,17 @@
             
             // Consent'i güncelle
             window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push(function() {
-                this.consent.update({
+            window.dataLayer.push({
+                'event': 'consent_update',
+                'consent_settings': {
                     'ad_storage': preferences.ad ? 'granted' : 'denied',
                     'ad_user_data': preferences.ad ? 'granted' : 'denied',
                     'ad_personalization': preferences.ad ? 'granted' : 'denied',
                     'analytics_storage': preferences.analytics ? 'granted' : 'denied',
                     'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                    'personalization_storage': preferences.personalization ? 'granted' : 'denied'
-                });
+                    'personalization_storage': preferences.personalization ? 'granted' : 'denied',
+                    'security_storage': 'granted'
+                }
             });
             
             // Banner'ı kaldır
