@@ -155,54 +155,55 @@
     //OFA-consent-preferences
 
     //31
-    //31
     window.consentManager = {
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
-
+            
             // LocalStorage'a kaydet
             window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
-
+            
             // GTM consent'i güncelle
             if (typeof window.updateGTMConsent === 'function') {
                 window.updateGTMConsent(preferences);
             }
-
+            
             // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
             if (banner && banner.parentNode) {
                 banner.parentNode.removeChild(banner);
             }
         },
-
+    
         acceptAll: function() {
             this.updateConsent({
-                ad: true,
                 analytics: true,
-                functionality: true,
-                personalization: true
+                ad: true,
+                personalization: true,
+                functionality: true  // Zorunlu çerezler her zaman true olmalı
             });
         },
-
+    
         rejectAll: function() {
             this.updateConsent({
-                ad: false,
                 analytics: false,
-                functionality: false,
-                personalization: false
+                ad: false,
+                personalization: false,
+                functionality: true  // Zorunlu çerezler her zaman true olmalı
             });
         },
-
+    
         savePreferences: function() {
             const analytics = document.getElementById('analytics_consent');
             const ads = document.getElementById('ads_consent');
             const personalization = document.getElementById('personalization_consent');
-
-            this.updateConsent({
-                ad: ads ? ads.checked : false,
+    
+            const preferences = {
                 analytics: analytics ? analytics.checked : false,
-                functionality: true,
-                personalization: personalization ? personalization.checked : false
-            });
+                ad: ads ? ads.checked : false,
+                personalization: personalization ? personalization.checked : false,
+                functionality: true  // Zorunlu çerezler her zaman true olmalı
+            };
+    
+            this.updateConsent(preferences);
         }
     };
