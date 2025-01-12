@@ -175,16 +175,19 @@
         updateConsent: function(preferences) {
             console.log('Updating consent with:', preferences);
             
-            // DataLayer'a gönder
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 event: 'consent_update',
-                consent_preferences: preferences
+                consent_settings: {
+                    ad_storage: preferences.ad ? 'granted' : 'denied',
+                    ad_user_data: preferences.ad ? 'granted' : 'denied',
+                    ad_personalization: preferences.ad ? 'granted' : 'denied',
+                    analytics_storage: preferences.analytics ? 'granted' : 'denied',
+                    functionality_storage: preferences.functionality ? 'granted' : 'denied',
+                    personalization_storage: preferences.personalization ? 'granted' : 'denied',
+                    security_storage: 'granted'
+                }
             });
-            
-            // LocalStorage'a kaydet
-            localStorage.setItem('consentpreferences', JSON.stringify(preferences));
-            console.log('Saved to localStorage');
             
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
