@@ -176,9 +176,12 @@
             // Cookie'yi kaydet
             document.cookie = 'user_consent_preferences=' + JSON.stringify(preferences) + ';path=/;max-age=31536000;SameSite=Lax';
             
-            // GA4 consent mode API'sini çağır
-            if (typeof window.gtag === 'function') {
-                console.log('Updating consent with gtag:', preferences);
+            // Debug için log
+            console.log('Window gtag:', window.gtag);
+            console.log('DataLayer:', window.dataLayer);
+            
+            try {
+                // GA4 consent mode API'sini çağır
                 window.gtag('consent', 'update', {
                     'ad_storage': preferences.ad ? 'granted' : 'denied',
                     'analytics_storage': preferences.analytics ? 'granted' : 'denied',
@@ -188,21 +191,9 @@
                     'ad_user_data': preferences.ad ? 'granted' : 'denied',
                     'ad_personalization': preferences.ad ? 'granted' : 'denied'
                 });
-            } else {
-                console.log('gtag function not found');
-                // gtag fonksiyonu yoksa dataLayer'a push edelim
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push(function() {
-                    this.gtag('consent', 'update', {
-                        'ad_storage': preferences.ad ? 'granted' : 'denied',
-                        'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                        'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                        'personalization_storage': preferences.personalization ? 'granted' : 'denied',
-                        'security_storage': 'granted',
-                        'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                        'ad_personalization': preferences.ad ? 'granted' : 'denied'
-                    });
-                });
+                console.log('Consent update called successfully');
+            } catch (error) {
+                console.error('Error updating consent:', error);
             }
             
             // Banner'ı kaldır
