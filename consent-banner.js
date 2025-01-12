@@ -173,15 +173,12 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
-            console.log('Updating consent with:', preferences);
+            // GTM consent'i güncelle
+            if (typeof window.updateGTMConsent === 'function') {
+                window.updateGTMConsent(preferences);
+            }
             
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                event: 'consent_update',
-                consent_preferences: preferences
-            });
-            console.log('Pushed to dataLayer');
-            
+            // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
         },
