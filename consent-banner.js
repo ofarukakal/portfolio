@@ -173,18 +173,15 @@
     
     window.consentManager = {
         updateConsent: function(preferences) {
-            // GTM consent'i güncelle
             if (typeof window.updateGTMConsent === 'function') {
                 window.updateGTMConsent(preferences);
             }
             
-            // Banner'ı kaldır
             const banner = document.getElementById('consentBanner');
             if (banner) banner.remove();
         },
         
         acceptAll: function() {
-            console.log('Accepting all...');
             this.updateConsent({
                 ad: true,
                 analytics: true,
@@ -194,7 +191,6 @@
         },
         
         rejectAll: function() {
-            console.log('Rejecting all...');
             this.updateConsent({
                 ad: false,
                 analytics: false,
@@ -204,7 +200,6 @@
         },
         
         savePreferences: function() {
-            console.log('Saving preferences...');
             const analytics = document.getElementById('analytics_consent');
             const ads = document.getElementById('ads_consent');
             const personalization = document.getElementById('personalization_consent');
