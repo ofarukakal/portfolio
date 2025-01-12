@@ -172,69 +172,63 @@
     document.body.appendChild(banner);
     //OFA-consent-preferences
     
-    //3131
-    window.consentManager = {
-        updateConsent: function(preferences) {
-            console.log('Updating consent with:', preferences);
+    //31
+    (function() {
+        // ... banner HTML ve stiller aynı ...
+        
+        window.consentManager = {
+            updateConsent: function(preferences) {
+                console.log('Updating consent with:', preferences);
+                
+                // LocalStorage'a kaydet
+                window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
+                
+                // Consent'i güncelle
+                window.gtag('consent', 'update', {
+                    'ad_storage': preferences.ad ? 'granted' : 'denied',
+                    'ad_user_data': preferences.ad ? 'granted' : 'denied',
+                    'ad_personalization': preferences.ad ? 'granted' : 'denied',
+                    'analytics_storage': preferences.analytics ? 'granted' : 'denied',
+                    'functionality_storage': preferences.functionality ? 'granted' : 'denied',
+                    'personalization_storage': preferences.personalization ? 'granted' : 'denied'
+                });
+                
+                // Banner'ı kaldır
+                const banner = document.getElementById('consentBanner');
+                if (banner && banner.parentNode) {
+                    banner.parentNode.removeChild(banner);
+                }
+            },
             
-            // LocalStorage'a kaydet
-            window.localStorage.setItem('ofa-consent-preferences', JSON.stringify(preferences));
-            console.log('Saved to localStorage');
+            acceptAll: function() {
+                this.updateConsent({
+                    ad: true,
+                    analytics: true,
+                    functionality: true,
+                    personalization: true
+                });
+            },
             
-            // DataLayer'a gönder
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'consent_update',
-                'ad_storage': preferences.ad ? 'granted' : 'denied',
-                'ad_user_data': preferences.ad ? 'granted' : 'denied',
-                'ad_personalization': preferences.ad ? 'granted' : 'denied',
-                'analytics_storage': preferences.analytics ? 'granted' : 'denied',
-                'functionality_storage': preferences.functionality ? 'granted' : 'denied',
-                'personalization_storage': preferences.personalization ? 'granted' : 'denied',
-                'security_storage': 'granted'
-            });
-            console.log('Pushed to dataLayer');
+            rejectAll: function() {
+                this.updateConsent({
+                    ad: false,
+                    analytics: false,
+                    functionality: false,
+                    personalization: false
+                });
+            },
             
-            // Banner'ı kaldır
-            const banner = document.getElementById('consentBanner');
-            if (banner && banner.parentNode) {
-                banner.parentNode.removeChild(banner);
-                console.log('Banner removed');
+            savePreferences: function() {
+                const analytics = document.getElementById('analytics_consent');
+                const ads = document.getElementById('ads_consent');
+                const personalization = document.getElementById('personalization_consent');
+                
+                this.updateConsent({
+                    ad: ads ? ads.checked : false,
+                    analytics: analytics ? analytics.checked : false,
+                    functionality: true,
+                    personalization: personalization ? personalization.checked : false
+                });
             }
-        },
-        
-        acceptAll: function() {
-            console.log('Accepting all...');
-            this.updateConsent({
-                ad: true,
-                analytics: true,
-                functionality: true,
-                personalization: true
-            });
-        },
-        
-        rejectAll: function() {
-            console.log('Rejecting all...');
-            this.updateConsent({
-                ad: false,
-                analytics: false,
-                functionality: false,
-                personalization: false
-            });
-        },
-        
-        savePreferences: function() {
-            console.log('Saving preferences...');
-            const analytics = document.getElementById('analytics_consent');
-            const ads = document.getElementById('ads_consent');
-            const personalization = document.getElementById('personalization_consent');
-            
-            this.updateConsent({
-                ad: ads ? ads.checked : false,
-                analytics: analytics ? analytics.checked : false,
-                functionality: true,
-                personalization: personalization ? personalization.checked : false
-            });
-        }
-    };
-})();
+        };
+    })();
