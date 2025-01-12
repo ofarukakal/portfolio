@@ -4,163 +4,170 @@
     //31
     banner.innerHTML = `
     <style>
-        #gdpr_consent_banner_v2_unique_2024 {
-            all: revert;
-            position: fixed !important;
-            bottom: 24px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            background: #FFFFFF !important;
-            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.12) !important;
-            border-radius: 12px !important;
-            padding: 24px !important;
-            width: 90% !important;
-            max-width: 500px !important;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-            z-index: 99999 !important;
-        }
+            #consentBanner {
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #FFFFFF;
+                box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.12);
+                border-radius: 12px;
+                padding: 24px;
+                width: 90%;
+                max-width: 500px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                z-index: 99999;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 * {
-            all: revert;
-            box-sizing: border-box !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
+            #consentBanner h2 {
+                margin: 0 0 12px 0;
+                font-size: 18px;
+                color: #1a1a1a;
+                font-weight: 600;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 h2 {
-            font-size: 20px !important;
-            color: #1a1a1a !important;
-            font-weight: 600 !important;
-            margin-bottom: 12px !important;
-        }
+            #consentBanner p {
+                margin: 0 0 20px 0;
+                font-size: 14px;
+                color: #666666;
+                line-height: 1.5;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 p {
-            font-size: 14px !important;
-            color: #666666 !important;
-            line-height: 1.5 !important;
-            margin-bottom: 24px !important;
-        }
+            #consentBanner .consent-options {
+                margin-bottom: 24px;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .consent-option {
-            display: flex !important;
-            align-items: center !important;
-            margin-bottom: 12px !important;
-        }
+            #consentBanner .consent-option {
+                display: flex;
+                align-items: center;
+                margin-bottom: 12px;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .switch {
-            position: relative !important;
-            display: inline-block !important;
-            width: 44px !important;
-            height: 24px !important;
-            margin-right: 12px !important;
-        }
+            #consentBanner .consent-option:last-child {
+                margin-bottom: 0;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .switch input {
-            opacity: 0 !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
+            #consentBanner .toggle {
+                position: relative;
+                display: inline-block;
+                width: 36px;
+                height: 20px;
+                margin-right: 12px;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .slider {
-            position: absolute !important;
-            cursor: pointer !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            background-color: #e4e4e7 !important;
-            transition: .3s !important;
-            border-radius: 24px !important;
-        }
+            #consentBanner .toggle input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .slider:before {
-            position: absolute !important;
-            content: "" !important;
-            height: 20px !important;
-            width: 20px !important;
-            left: 2px !important;
-            bottom: 2px !important;
-            background-color: white !important;
-            transition: .3s !important;
-            border-radius: 50% !important;
-        }
+            #consentBanner .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #e4e4e7;
+                transition: .3s;
+                border-radius: 20px;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 input:checked + .slider {
-            background-color: #2563eb !important;
-        }
+            #consentBanner .slider:before {
+                position: absolute;
+                content: "";
+                height: 16px;
+                width: 16px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                transition: .3s;
+                border-radius: 50%;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 input:checked + .slider:before {
-            transform: translateX(20px) !important;
-        }
+            #consentBanner input:checked + .slider {
+                background-color: #2563eb;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .consent-label {
-            font-size: 14px !important;
-            color: #1a1a1a !important;
-        }
+            #consentBanner input:checked + .slider:before {
+                transform: translateX(16px);
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .consent-buttons {
-            display: flex !important;
-            gap: 12px !important;
-            margin-top: 24px !important;
-        }
+            #consentBanner .consent-label {
+                font-size: 14px;
+                color: #1a1a1a;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 button {
-            padding: 10px 20px !important;
-            border-radius: 6px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            cursor: pointer !important;
-            border: none !important;
-        }
+            #consentBanner .consent-buttons {
+                display: flex;
+                gap: 12px;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .primary-button {
-            background-color: #2563eb !important;
-            color: white !important;
-            flex: 1 !important;
-        }
+            #consentBanner button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
 
-        #gdpr_consent_banner_v2_unique_2024 .secondary-button {
-            background-color: #f4f4f5 !important;
-            color: #1a1a1a !important;
-        }
-    </style>
+            #consentBanner .primary-button {
+                background-color: #2563eb;
+                color: white;
+                flex: 1;
+            }
 
-    <div id="gdpr_consent_banner_v2_unique_2024">
-        <h2>Çerez Tercihleri</h2>
-        <p>Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz. Tercihlerinizi istediğiniz zaman güncelleyebilirsiniz.</p>
-        
-        <div class="consent-options">
-            <div class="consent-option">
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-                <span class="consent-label">Analitik Çerezler</span>
+            #consentBanner .primary-button:hover {
+                background-color: #1d4ed8;
+            }
+
+            #consentBanner .secondary-button {
+                background-color: #f4f4f5;
+                color: #1a1a1a;
+            }
+
+            #consentBanner .secondary-button:hover {
+                background-color: #e4e4e7;
+            }
+        </style>
+        <div>
+            <h2>Çerez Tercihleri</h2>
+            <p>Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz. Tercihlerinizi istediğiniz zaman güncelleyebilirsiniz.</p>
+            
+            <div class="consent-options">
+                <div class="consent-option">
+                    <label class="toggle">
+                        <input type="checkbox" id="analytics_consent" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="consent-label">Analitik Çerezler</span>
+                </div>
+                
+                <div class="consent-option">
+                    <label class="toggle">
+                        <input type="checkbox" id="ads_consent" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="consent-label">Reklam Çerezleri</span>
+                </div>
+                
+                <div class="consent-option">
+                    <label class="toggle">
+                        <input type="checkbox" id="personalization_consent" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="consent-label">Kişiselleştirme Çerezleri</span>
+                </div>
             </div>
             
-            <div class="consent-option">
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-                <span class="consent-label">Reklam Çerezleri</span>
-            </div>
-            
-            <div class="consent-option">
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-                <span class="consent-label">Kişiselleştirme Çerezleri</span>
+            <div class="consent-buttons">
+                <button class="primary-button" onclick="consentManager.acceptAll()">Tümünü Kabul Et</button>
+                <button class="secondary-button" onclick="consentManager.savePreferences()">Tercihleri Kaydet</button>
+                <button class="secondary-button" onclick="consentManager.rejectAll()">Reddet</button>
             </div>
         </div>
-        
-        <div class="consent-buttons">
-            <button class="primary-button" onclick="consentManager.acceptAll()">Tümünü Kabul Et</button>
-            <button class="secondary-button" onclick="consentManager.savePreferences()">Tercihleri Kaydet</button>
-            <button class="secondary-button" onclick="consentManager.rejectAll()">Reddet</button>
-        </div>
-    </div>
     `;
     
     document.body.appendChild(banner);
