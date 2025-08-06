@@ -114,7 +114,7 @@
             }
         </style>
         <div>
-            <h2>Çerez Tercihleri - <b>OFA</b></h2>
+            <h2>Çerez Tercihleri - <b><a href="https://www.linkedin.com/in/ofarukakal">OFA</a></b></h2>
             <p>Size daha iyi bir deneyim sunabilmek için çerezleri kullanıyoruz. Tercihlerinizi istediğiniz zaman güncelleyebilirsiniz.</p>
             
             <div class="consent-options">
